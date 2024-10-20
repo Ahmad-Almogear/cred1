@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit User</title>
+    <style>
+        /* Same professional styling as registration page */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f5;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            width: 350px;
+        }
+        h2 {
+            text-align: center;
+            color: #0056b3;
+        }
+        label {
+            margin: 8px 0 4px;
+            color: #555;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #0056b3;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #004080;
+        }
+        .error {
+            color: red;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Edit Your Info</h2>
+        <form id="editForm">
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" placeholder="Enter your first name" required>
+            <span class="error" id="firstNameError"></span>
+            
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" placeholder="Enter your last name" required>
+            <span class="error" id="lastNameError"></span>
+            
+            <label for="email">Email:</label>
+            <input type="email" id="email" placeholder="Enter your email" readonly>
+            
+            <label for="phone">Phone Number:</label>
+            <input type="text" id="phone" placeholder="Enter your phone number" required pattern="^\d{10}$" title="Phone number must be 10 digits">
+            <span class="error" id="phoneError"></span>
+            
+            <label for="jobTitle">Job Title:</label>
+            <select id="jobTitle" required>
+                <option value="">Select job title</option>
+                <option value="Developer">Developer</option>
+                <option value="Designer">Designer</option>
+                <option value="Manager">Manager</option>
+            </select>
+            <span class="error" id="jobTitleError"></span>
+            
+            <button type="button" onclick="saveChanges()">Save Changes</button>
+        </form>
+    </div>
+
+    <script>
+        // Load current user data for editing
+        window.onload = function() {
+            const email = localStorage.getItem('editingUser');
+            const user = JSON.parse(localStorage.getItem(email));
+
+            document.getElementById('firstName').value = user.firstName;
+            document.getElementById('lastName').value = user.lastName;
+            document.getElementById('email').value = user.email; // Read-only, can't change
+            document.getElementById('phone').value = user.phone;
+            document.getElementById('jobTitle').value = user.jobTitle;
+        };
+
+        // Save the changes and update the user data
+        function saveChanges() {
+            const email = document.getElementById('email').value;
+            const updatedUser = {
+                firstName: document.getElementById('firstName').value.trim(),
+                lastName: document.getElementById('lastName').value.trim(),
+                email: email,
+                phone: document.getElementById('phone').value.trim(),
+                jobTitle: document.getElementById('jobTitle').value
+            };
+
+            // Save updated user data in localStorage
+            localStorage.setItem(email, JSON.stringify(updatedUser));
+            alert('Changes saved successfully!');
+            window.location.href = 'cred.html'; // Redirect back to credentials page
+        }
+    </script>
+</body>
+</html>

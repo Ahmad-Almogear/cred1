@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credentials</title>
+    <style>
+        /* Professional styling similar to the registration page */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f5;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            width: 80%;
+            max-width: 800px;
+        }
+        h2 {
+            text-align: center;
+            color: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #0056b3;
+            color: white;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        button {
+            padding: 8px 12px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #c0392b;
+        }
+        .edit-button {
+            background-color: #3498db;
+        }
+        .edit-button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>User Information</h2>
+        <table id="userTable">
+            <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Job Title</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- User data will be dynamically loaded here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Function to load all registered users from localStorage
+        function loadUsers() {
+            const tbody = document.querySelector('#userTable tbody');
+            tbody.innerHTML = ''; // Clear existing rows
+
+            for (let i = 0; i < localStorage.length; i++) {
+                const email = localStorage.key(i);
+                const user = JSON.parse(localStorage.getItem(email));
+
+                const row = `
+                    <tr>
+                        <td>${user.firstName}</td>
+                        <td>${user.lastName}</td>
+                        <td>${user.email}</td>
+                        <td>${user.phone}</td>
+                        <td>${user.jobTitle}</td>
+                        <td>
+                            <button class="edit-button" onclick="editUser('${email}')">Edit</button>
+                            <button onclick="deleteUser('${email}')">Delete</button>
+                        </td>
+                    </tr>
+                `;
+                tbody.insertAdjacentHTML('beforeend', row);
+            }
+        }
+
+        // Function to delete a user
+        function deleteUser(email) {
+            localStorage.removeItem(email);
+            loadUsers(); // Reload the table
+        }
+
+        // Function to edit user data
+        function editUser(email) {
+            // Store the email of the user to be edited in localStorage
+            localStorage.setItem('editingUser', email);
+            window.location.href = 'edit.html'; // Redirect to edit page
+        }
+
+        window.onload = loadUsers; // Load users when the page is ready
+    </script>
+</body>
+</html>

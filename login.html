@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        /* Professional styling similar to the registration page */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f5;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            width: 350px;
+        }
+        h2 {
+            text-align: center;
+            color: #0056b3;
+        }
+        label {
+            margin: 8px 0 4px;
+            color: #555;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #0056b3;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #004080;
+        }
+        .link {
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+            color: #0056b3;
+            text-decoration: none;
+        }
+        .link:hover {
+            text-decoration: underline;
+        }
+        .error {
+            color: red;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <label for="email">Email:</label>
+            <input type="email" id="email" placeholder="Enter your email" required>
+            <span class="error" id="emailError"></span>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" placeholder="Enter your password" required>
+            <span class="error" id="passwordError"></span>
+            
+            <button type="button" onclick="loginUser()">Login</button>
+        </form>
+    </div>
+
+    <script>
+        // Function to validate login inputs
+        function validateLoginForm() {
+            let isValid = true;
+
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+            
+            document.querySelectorAll('.error').forEach(el => el.textContent = '');
+
+            if (!email) {
+                document.getElementById('emailError').textContent = "Email is required";
+                isValid = false;
+            }
+            if (!password) {
+                document.getElementById('passwordError').textContent = "Password is required";
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        // Function to log in the user
+        function loginUser() {
+            if (validateLoginForm()) {
+                const email = document.getElementById('email').value.trim();
+                const password = document.getElementById('password').value.trim();
+
+                const user = JSON.parse(localStorage.getItem(email));
+
+                if (user && user.password === password) {
+                    document.cookie = `loggedInUser=${email}; path=/`;
+                    window.location.href = 'cred.html';
+                } else {
+                    alert('Invalid email or password');
+                }
+            }
+        }
+    </script>
+</body>
+</html>
